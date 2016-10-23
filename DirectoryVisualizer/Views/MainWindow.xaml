@@ -1,12 +1,28 @@
-﻿<Window x:Class="DirectoryVisualizer.MainWindow"
+﻿<metro:MetroWindow x:Class="DirectoryVisualizer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DirectoryVisualizer"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"           
+        xmlns:chart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Directory Visualizer" Height="350" Width="525" EnableDWMDropShadow="True">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DockPanel>
+            <Button DockPanel.Dock="Right" Content="Browse..." MinWidth="75" VerticalContentAlignment="Center"/>
+            <TextBox IsReadOnly="True" Margin="0,0,5,0"/>
+        </DockPanel>
+        <chart:ClusteredBarChart Grid.Row="1" SeriesSource="{Binding Directories}" Background="White" ChartLegendVisibility="Visible" >
+            <chart:ClusteredBarChart.SeriesTemplate>
+                <DataTemplate>
+                    <chart:ChartSeries DisplayMember="Name" ValueMember="Size" ItemsSource="{Binding Items}" />
+                </DataTemplate>
+            </chart:ClusteredBarChart.SeriesTemplate>
+        </chart:ClusteredBarChart>
     </Grid>
-</Window>
+</metro:MetroWindow>

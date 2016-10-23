@@ -17,7 +17,7 @@ namespace DirectoryVisualizer
     /// <summary>
     /// Interaction logic for DirectorySelector.xaml
     /// </summary>
-    public partial class DirectorySelector : Window
+    public partial class DirectorySelector
     {
         public DirectorySelector()
         {
