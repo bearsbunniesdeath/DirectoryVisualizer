@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using DirectoryVisualizer.ViewModels;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,34 +12,35 @@ namespace DirectoryVisualizer
     class DirectoryVisualizerViewModel : ViewModelBase
     {
 
+        private string _baseDirectory;
+
         public DirectoryVisualizerViewModel()
         {
-            Directories = new ObservableCollection<SingleGroup>();
-            SingleGroup group = new SingleGroup();
-            DummyDirectory item = new DummyDirectory { Name = "MyDirectory1", Size = 100 };
-            DummyDirectory item2 = new DummyDirectory { Name = "MyDirectory2", Size = 200 };
-            group.Items = new ObservableCollection<DummyDirectory>();
-            group.Items.Add(item2);
-            group.Items.Add(item);
-
-            Directories.Add(group);          
+                     
         }
 
-        public ObservableCollection<SingleGroup> Directories
+
+        #region "Properties"
+
+        public ObservableCollection<DirectoryViewModel> Directories
         {
             get;
             set;
         }
-    }
 
-    class SingleGroup
-    {       
-        public ObservableCollection<DummyDirectory> Items { get; set; }
-    }
+        public string BaseDirectory
+        {
+            get
+            {
+                return _baseDirectory;
+            }
 
-    class DummyDirectory
-    {
-        public string Name { get; set; }
-        public double Size { get; set; }
-    }
+            set
+            {
+                _baseDirectory = value;
+                RaisePropertyChanged(nameof(BaseDirectory));          
+            }
+        }
+        #endregion
+    }   
 }

@@ -95,6 +95,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\DirectorySeries.cs" />
+    <Compile Include="ViewModels\DirectoryViewModel.cs" />
     <Compile Include="ViewModels\DirectoryVisualizerViewModel.cs" />
     <Compile Include="Views\DirectorySelector.xaml.cs">
       <DependentUpon>DirectorySelector.xaml</DependentUpon>
