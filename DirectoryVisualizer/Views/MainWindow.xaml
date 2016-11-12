@@ -14,13 +14,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <DockPanel>
-            <Button DockPanel.Dock="Right" Content="Browse..." MinWidth="75" VerticalContentAlignment="Center"/>
-            <TextBox IsReadOnly="True" Margin="0,0,5,0"/>
+            <Button DockPanel.Dock="Right" Content="Browse..." Command="{Binding SelectDirectory}" MinWidth="75" VerticalContentAlignment="Center"/>
+            <TextBox IsReadOnly="True" Text="{Binding BaseDirectory}" Margin="0,0,5,0"/>
         </DockPanel>
-        <chart:ClusteredBarChart Grid.Row="1" SeriesSource="{Binding Directories}" Background="White" ChartLegendVisibility="Visible" >
+        <chart:ClusteredBarChart Grid.Row="1" SeriesSource="{Binding SeriesCollection}" Background="White" ChartLegendVisibility="Visible" >
             <chart:ClusteredBarChart.SeriesTemplate>
                 <DataTemplate>
-                    <chart:ChartSeries DisplayMember="Name" ValueMember="Size" ItemsSource="{Binding Items}" />
+                    <chart:ChartSeries DisplayMember="DisplayName" ValueMember="DisplayValue" ItemsSource="{Binding DirectoryData}"/>
                 </DataTemplate>
             </chart:ClusteredBarChart.SeriesTemplate>
         </chart:ClusteredBarChart>

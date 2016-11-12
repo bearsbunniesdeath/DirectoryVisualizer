@@ -1,11 +1,10 @@
-﻿using DirectoryVisualizer.ViewModels;
+﻿using DirectoryVisualizer.Models;
+using DirectoryVisualizer.Services;
 using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DirectoryVisualizer.ViewModels;
+using GalaSoft.MvvmLight.Command;
+using System.Windows.Forms;
 
 namespace DirectoryVisualizer
 {
@@ -13,19 +12,44 @@ namespace DirectoryVisualizer
     {
 
         private string _baseDirectory;
+        private ObservableCollection<DirectorySeriesViewModel> _seriesCollection;
+
+        //_baseDirectory = "D:/Documents/EA Games/The Sims™ 2 Ultimate Collection";    
 
         public DirectoryVisualizerViewModel()
         {
-                     
+
+            SelectDirectory = new RelayCommand(
+                        () =>
+                        {
+                            FolderBrowserDialog directorySelector = new FolderBrowserDialog();
+                            DialogResult result;
+                            directorySelector.ShowNewFolderButton = false;
+                            result = directorySelector.ShowDialog();
+                            if (result == DialogResult.OK)
+                            {
+                                BaseDirectory = directorySelector.SelectedPath;
+                                LoadSeriesCollection();
+                            }
+                        });
+           
+            SeriesCollection = new ObservableCollection<DirectorySeriesViewModel>();                   
         }
 
 
         #region "Properties"
 
-        public ObservableCollection<DirectoryViewModel> Directories
+        public ObservableCollection<DirectorySeriesViewModel> SeriesCollection
         {
-            get;
-            set;
+            get
+            {
+                return _seriesCollection;
+            }
+            set
+            {
+                _seriesCollection = value;
+                RaisePropertyChanged(nameof(SeriesCollection));
+            }
         }
 
         public string BaseDirectory
@@ -42,5 +66,27 @@ namespace DirectoryVisualizer
             }
         }
         #endregion
-    }   
+
+        #region "Commands"
+        public RelayCommand SelectDirectory { get; set; }        
+        #endregion
+
+        private void LoadSeriesCollection()
+        {
+            DirectoryInfoProvider baseProvider = new DirectoryInfoProvider(_baseDirectory);
+            ObservableCollection<DirectoryInfoProxy> directories = new ObservableCollection<DirectoryInfoProxy>();
+            foreach (var childDirName in baseProvider.GetListOfDirectories())
+            {
+                string childDirPath = System.IO.Path.Combine(_baseDirectory, childDirName);
+                DirectoryInfoProxy childDir = new DirectoryInfoProxy(childDirPath);
+
+                directories.Add(childDir);
+            }
+
+            DirectorySeriesViewModel directorySizeSeries = new DirectorySeriesViewModel("Directory Size", directories);
+
+            SeriesCollection.Add(directorySizeSeries);
+            RaisePropertyChanged(nameof (SeriesCollection));
+        }
+    }
 }

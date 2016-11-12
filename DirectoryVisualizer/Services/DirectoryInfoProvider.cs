@@ -10,7 +10,7 @@ namespace DirectoryVisualizer.Services
     class DirectoryInfoProvider : IDirectoryInfoProvider
     {
         private DirectoryInfo dirInfo;
-
+     
         public DirectoryInfoProvider(string dirPath)
         {
             dirInfo = new DirectoryInfo(dirPath);
@@ -20,11 +20,7 @@ namespace DirectoryVisualizer.Services
         {
             this.dirInfo = dirInfo;
         }
-        
-        
-        /// <summary>
-        /// Get a list of first-level directories
-        /// </summary>       
+             
         public List<string> GetListOfDirectories()
         {
             DirectoryInfo[] dirs = dirInfo.GetDirectories();
@@ -35,10 +31,7 @@ namespace DirectoryVisualizer.Services
             }
             return dirPaths;
         }
-
-        /// <summary>
-        /// Get a list of first-level files
-        /// </summary>
+        
         public List<string> GetListOfFiles()
         {
             FileInfo[] files = dirInfo.GetFiles();
@@ -49,12 +42,12 @@ namespace DirectoryVisualizer.Services
             }
             return filePaths;
         }
-
-        /// <summary>
-        /// Gets the size of a directory in bytes
-        /// </summary>
-        /// <param name="name">The name of the directory in this directory</param>
-        /// <returns>The size of the directory in bytes</returns>
+       
+        public long GetSize()
+        {
+            return CalculateDirectorySize(dirInfo);
+        }
+        
         public long GetSizeOfDirectory(string name)
         {          
             //Get the directory we want to look at
@@ -83,12 +76,7 @@ namespace DirectoryVisualizer.Services
 
             return size;
         }
-
-        /// <summary>
-        /// Gets the size of a file in the directory in bytes
-        /// </summary>
-        /// <param name="name">A name of the file in the directory</param>
-        /// <returns>The size of the file in bytes</returns>
+       
         public long GetSizeOfFile(string name)
         {
             FileInfo file = dirInfo.GetFiles().First(f => f.Name == name);
